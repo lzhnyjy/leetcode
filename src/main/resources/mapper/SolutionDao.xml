@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leetcode.mapper.SolutionDao">
+
+    <resultMap id="solutionMap" type="solution" autoMapping="true">
+        <id property="solutionId" column="solutionId"/>
+        <collection property="labelList" javaType="ArrayList" ofType="label">
+            <id property="labelId" column="labelId"/>
+            <result property="labelName" column="labelName"/>
+        </collection>
+    </resultMap>
+
+    <select id="solution" resultMap="solutionMap" parameterType="int">
+        select solution.*,user.username,user.image,label.*
+        from solution,label,labelsolution,user
+        where solution.userId=user.userId and solution.solutionId=labelsolution.solutionId and labelsolution.labelId=label.labelId and problemId = #{problemId}
+        <if test="solutionKey!=null and solutionKey!=''">
+            and solutionText like concat('%',#{solutionKey},'%')
+        </if>
+        <if test="solutionType!=null and solutionType.size()>0">
+            and label.labelName in
+            <foreach collection="solutionType" item="type" index="i" open="(" close=")" separator=",">
+                #{type}
+            </foreach>
+        </if>
+        <choose>
+            <when test="solutionOrderType==1">
+                order by solution.solutionLikeNumber
+            </when>
+            <when test="solutionOrderType==2">
+                order by solution.visitedNumber
+            </when>
+            <when test="solutionOrderType==3">
+                order by solution.solutionDatetime desc
+            </when>
+            <when test="solutionOrderType==4">
+                order by solution.solutionDatetime asc
+            </when>
+        </choose>
+    </select>
+
+
+    <select id="selectLabel" resultType="label" parameterType="int">
+        select label.*
+        from solution,label,labelsolution
+        where solution.solutionId=labelsolution.solutionId and labelsolution.labelId=label.labelId and solution.solutionId=#{solutionId}
+    </select>
+
+    <select id="selectSolutionById" resultMap="solutionMap" parameterType="int">
+        select solution.*,label.*,user.*
+        from solution,label,labelsolution,user
+        where user.userId=solution.userId and labelsolution.labelId=label.labelId and solution.solutionId=labelsolution.solutionId
+        and solution.solutionId=#{solutionId}
+    </select>
+    
+    <update id="addVisitedNumber" parameterType="int">
+        update solution
+        set visitedNumber=visitedNumber+1
+        where solutionId=#{solutionId}
+    </update>
+
+    <update id="addLikeNumber" parameterType="int">
+        <if test="targetType==1">
+        update solution
+        set solutionLikeNumber=
+        <choose>
+            <when test="type==0">
+                solutionLikeNumber-1
+            </when>
+            <when test="type==1">
+                solutionLikeNumber+1
+            </when>
+            <otherwise>
+                solutionLikeNumber
+            </otherwise>
+        </choose>
+        where solutionId=#{Id}
+        </if>
+        <if  test="targetType==0">
+            update solutioncomment
+            set commentLikeNumber=
+            <choose>
+                <when test="type==0">
+                    commentLikeNumber-1
+                </when>
+                <when test="type==1">
+                    commentLikeNumber+1
+                </when>
+                <otherwise>
+                    commentLikeNumber
+                </otherwise>
+            </choose>
+            where commentId=#{Id}
+        </if>
+    </update>
+
+
+    <select id="selectLikeNumberById" parameterType="int" resultType="int">
+        <if test="targetType==1">
+            select solutionLikeNumber
+            from solution
+            where solutionId=#{Id}
+        </if>
+        <if test="targetType==0">
+            select commentLikeNumber
+            from solutioncomment
+            where commentId=#{Id}
+        </if>
+
+    </select>
+
+    <insert id="addSolution" parameterType="solution" useGeneratedKeys="true" keyProperty="solutionId" keyColumn="solutionId">
+        insert into solution (userId,problemId,solutionText,solutionName)
+        values (#{solution.userId},#{solution.problemId},#{solution.solutionText},#{solution.solutionName})
+    </insert>
+
+    <insert id="addSolutionLabel" parameterType="solution">
+        insert into labelsolution
+        values
+        <foreach collection="solution.labelIds" separator="," item="labelId" index="index">
+            (#{labelId},#{solution.solutionId})
+        </foreach>
+    </insert>
+
+</mapper>
+

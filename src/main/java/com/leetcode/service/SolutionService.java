@@ -32,6 +32,5 @@ public interface SolutionService {
    Integer addSolution(Solution solution);
 
     Integer addSolutionLabel(Solution solution);
-
-
+    
 }

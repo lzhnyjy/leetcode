@@ -44,5 +44,7 @@ public interface SolutionDao  {
 
      Integer addSolutionLabel(@Param("solution") Solution solution);
 
+     Integer addCommentNumbers(@Param("solutionId") Integer solutionId);
+
 }
 

@@ -122,5 +122,11 @@
         </foreach>
     </insert>
 
+    <update id="addCommentNumbers" parameterType="int" >
+        update solution
+        set solutionCommentNumber=solutionCommentNumber+1
+        where solutionId=#{solutionId}
+    </update>
+
 </mapper>
 

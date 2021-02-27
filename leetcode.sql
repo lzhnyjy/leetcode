@@ -113,6 +113,18 @@ CREATE TABLE `problemcomment` (
 
 /*Data for the table `problemcomment` */
 
+/*Table structure for table `problemcommentlike` */
+
+DROP TABLE IF EXISTS `problemcommentlike`;
+
+CREATE TABLE `problemcommentlike` (
+  `commentId` int NOT NULL,
+  `userId` int NOT NULL,
+  PRIMARY KEY (`commentId`,`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `problemcommentlike` */
+
 /*Table structure for table `problemdesc` */
 
 DROP TABLE IF EXISTS `problemdesc`;
@@ -129,6 +141,18 @@ CREATE TABLE `problemdesc` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `problemdesc` */
+
+/*Table structure for table `problemlike` */
+
+DROP TABLE IF EXISTS `problemlike`;
+
+CREATE TABLE `problemlike` (
+  `problemId` int NOT NULL,
+  `userId` int NOT NULL,
+  PRIMARY KEY (`problemId`,`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `problemlike` */
 
 /*Table structure for table `solution` */
 
@@ -171,6 +195,18 @@ CREATE TABLE `solutioncomment` (
 
 insert  into `solutioncomment`(`commentId`,`solutionId`,`commentContent`,`userId`,`parentId`,`commentDatetime`,`commentLikeNumber`) values (1,1,'自己瞎编的1',1,NULL,'2021-02-24 12:14:23',1),(2,1,'自己瞎编的2',2,1,'2021-02-18 12:22:37',2),(3,1,'自己瞎编的3',3,1,'2021-02-04 12:22:41',3),(4,1,'自己瞎编的4',2,3,'2021-02-04 12:31:40',4),(5,1,'1234567890',1,NULL,'2021-02-17 20:35:31',0),(6,1,'这是我的评论',1,NULL,'2021-02-24 20:55:09',0),(7,1,'这是我的评论',1,2,'2021-02-24 20:55:33',0),(8,1,'这是我的评论',1,2,'2021-02-25 09:53:10',0),(9,1,'这是我的评论',1,2,'2021-02-25 09:59:25',0),(10,2,'这是题解2的评论',2,NULL,'2021-02-25 10:48:59',0),(11,3,'这是对题解3的评论',3,NULL,'2021-02-25 11:13:59',0),(12,3,'这是对题解3下面的评论11的评论',1,11,'2021-02-25 11:15:33',0),(13,3,'这是对题解3下面的评论12的评论',1,12,'2021-02-25 11:15:58',0);
 
+/*Table structure for table `solutioncommentlike` */
+
+DROP TABLE IF EXISTS `solutioncommentlike`;
+
+CREATE TABLE `solutioncommentlike` (
+  `commentId` int NOT NULL,
+  `userId` int NOT NULL,
+  PRIMARY KEY (`commentId`,`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `solutioncommentlike` */
+
 /*Table structure for table `solutionimage` */
 
 DROP TABLE IF EXISTS `solutionimage`;
@@ -184,6 +220,18 @@ CREATE TABLE `solutionimage` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `solutionimage` */
+
+/*Table structure for table `solutionlike` */
+
+DROP TABLE IF EXISTS `solutionlike`;
+
+CREATE TABLE `solutionlike` (
+  `solutionId` int NOT NULL,
+  `userId` int NOT NULL,
+  PRIMARY KEY (`solutionId`,`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `solutionlike` */
 
 /*Table structure for table `submitrecord` */
 
@@ -203,19 +251,6 @@ CREATE TABLE `submitrecord` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `submitrecord` */
-
-/*Table structure for table `t_user` */
-
-DROP TABLE IF EXISTS `t_user`;
-
-CREATE TABLE `t_user` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `username` char(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `t_user` */
 
 /*Table structure for table `user` */
 

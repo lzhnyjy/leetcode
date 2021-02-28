@@ -1,7 +1,9 @@
 package com.leetcode.entity;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Problem {
+    @TableId(value = "problemId",type = IdType.AUTO)//在自增主键的变量加上即可
     @TableField("`problemId`")
     private int problemId; // 题目编号
 

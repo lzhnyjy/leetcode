@@ -66,6 +66,7 @@ public class SolutionController {
     @GetMapping("/label/{solutionId}")
     public Result selectLabel(@PathVariable("solutionId") Integer solutionId) {
         List<Label> labels = solutionService.selectLabel(solutionId);
+        solutionService.addSolutionVisitedNumber(solutionId);
         return new Result(true, 200, "查询成功", labels);
     }
 
@@ -90,9 +91,9 @@ public class SolutionController {
      * @Param [type, targetType, solutionId]
      * @return com.leetcode.response.Result
      **/
-    @PutMapping("/like/{targetType}/{type}/{solutionId}")
-    public Result addSolutionLikeNumber(@PathVariable("type") Integer type,@PathVariable("targetType") Integer targetType,@PathVariable("solutionId") Integer solutionId){
-        Integer likeNumber = solutionService.addSolutionLikeNumber(type,targetType,solutionId);
+    @PutMapping("/like/{userId}/{targetType}/{type}/{solutionId}")
+    public Result addSolutionLikeNumber(@PathVariable("type") Integer type,@PathVariable("targetType") Integer targetType,@PathVariable("solutionId") Integer solutionId,@PathVariable("userId") Integer userId){
+        Integer likeNumber = solutionService.addSolutionLikeNumber(type,targetType,solutionId,userId);
         if(type==1)
         return new Result(true, 200, "点赞成功", likeNumber);
         return new Result(true, 200, "取消赞成功", likeNumber);

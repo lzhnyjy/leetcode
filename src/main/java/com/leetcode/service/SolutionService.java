@@ -25,7 +25,7 @@ public interface SolutionService {
 
    void addSolutionVisitedNumber(Integer solutionId);
 
-   Integer addSolutionLikeNumber(Integer type,Integer targetType,Integer solutionId);
+   Integer addSolutionLikeNumber(Integer type,Integer targetType,Integer solutionId,Integer userId);
 
    Integer selectLikeNumberById(Integer targetType,Integer solutionId);
 

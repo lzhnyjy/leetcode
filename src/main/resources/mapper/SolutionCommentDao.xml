@@ -20,4 +20,14 @@
         from solutioncomment
         where commentId = #{parentId}
     </select>
+    
+    <insert id="addSolutionCommentLike" parameterType="int">
+        insert  into solutioncommentlike
+        values (#{solutionCommentId},#{userId})
+    </insert>
+
+    <delete id="delSolutionCommentLike" parameterType="int">
+        delete from solutioncommentlike
+        where commentId=#{solutionCommentId} and userId=#{userId}
+    </delete>
 </mapper>

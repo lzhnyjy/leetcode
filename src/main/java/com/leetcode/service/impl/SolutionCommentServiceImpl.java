@@ -2,8 +2,10 @@ package com.leetcode.service.impl;/**
  * @Author lzh
  */
 
+import com.leetcode.entity.Solution;
 import com.leetcode.entity.SolutionComment;
 import com.leetcode.mapper.SolutionCommentDao;
+import com.leetcode.mapper.SolutionDao;
 import com.leetcode.service.SolutionCommentService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class SolutionCommentServiceImpl implements SolutionCommentService {
 
     @Autowired
     private SolutionCommentDao solutionCommentDao;
+    @Autowired
+    private SolutionDao solutionDao;
 
     @Override
     public List<SolutionComment> selectCommentBySolutionId(Integer solutionId) {
@@ -56,6 +60,7 @@ public class SolutionCommentServiceImpl implements SolutionCommentService {
     @Override
     public Integer addSolutionComment(SolutionComment solutionComment){
         Integer integer = solutionCommentDao.addSolutionComment(solutionComment);
+        solutionDao.addCommentNumbers(solutionComment.getSolutionId());
         return integer;
     }
 

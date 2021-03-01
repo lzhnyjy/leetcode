@@ -17,4 +17,9 @@ public interface SolutionCommentDao {
     Integer addSolutionComment(@Param("solutionComment") SolutionComment solutionComment);
 
     SolutionComment selectTopMostCommentId(@Param("parentId") Integer parentId);
+
+    Integer addSolutionCommentLike(@Param("solutionCommentId") Integer solutionCommentId,@Param("userId") Integer userId);
+
+    Integer delSolutionCommentLike(@Param("solutionCommentId") Integer solutionCommentId,@Param("userId") Integer userId);
+
 }

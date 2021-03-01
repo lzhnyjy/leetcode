@@ -128,5 +128,15 @@
         where solutionId=#{solutionId}
     </update>
 
+    <insert id="addSolutionLike" parameterType="int">
+        insert into solutionlike
+        values(#{solutionId},#{userId})
+    </insert>
+
+    <delete id="delSolutionLike" parameterType="int">
+        delete from solutionlike
+        where solutionId=#{solutionId} and userId=#{userId}
+    </delete>
+
 </mapper>
 

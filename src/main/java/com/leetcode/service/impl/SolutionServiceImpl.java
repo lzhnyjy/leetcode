@@ -4,6 +4,7 @@ package com.leetcode.service.impl;/**
 
 import com.leetcode.entity.Label;
 import com.leetcode.entity.Solution;
+import com.leetcode.mapper.SolutionCommentDao;
 import com.leetcode.mapper.SolutionDao;
 import com.leetcode.service.SolutionService;
 import org.apache.ibatis.annotations.Param;
@@ -26,6 +27,9 @@ public class SolutionServiceImpl implements SolutionService {
 
     @Autowired
     private SolutionDao solutionDao;
+
+    @Autowired
+    private SolutionCommentDao solutionCommentDao;
 
     @Override
     public List<Solution> solution(Integer problemId, String solutionKey, Integer solutionOrderType, String solutionType){
@@ -60,7 +64,21 @@ public class SolutionServiceImpl implements SolutionService {
     }
 
     @Override
-    public Integer addSolutionLikeNumber(Integer type,Integer targetType,Integer Id) {
+    public Integer addSolutionLikeNumber(Integer type,Integer targetType,Integer Id,Integer userId) {
+        if(type==1){
+            if(targetType==1){
+                solutionDao.addSolutionLike(Id,userId);
+            }else if(targetType==0){
+                solutionCommentDao.addSolutionCommentLike(Id, userId);
+            }
+        }else if(type==0){
+            if(targetType==1){
+                solutionDao.delSolutionLike(Id,userId);
+            }else if(targetType==0){
+                solutionCommentDao.delSolutionCommentLike(Id, userId);
+            }
+        }
+
         solutionDao.addLikeNumber(type,targetType,Id);
         Integer likeNumber = selectLikeNumberById(targetType,Id);
         return likeNumber;

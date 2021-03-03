@@ -1,35 +1,29 @@
 package com.leetcode.controller;
 
-import com.leetcode.entity.Problem;
+import com.leetcode.annotation.PassToken;
+import com.leetcode.entity.vo.RestInfo;
 import com.leetcode.service.ProblemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-
-/**
- * (Problem)表控制层
- *
- * @author makejava
- * @since 2021-02-17 21:13:30
- */
 @RestController
-@RequestMapping("problem")
+@RequestMapping("/leetcode/question")
 public class ProblemController {
-    /**
-     * 服务对象
-     */
-    @Resource
-    private ProblemService problemService;
+
+    @Autowired
+    ProblemService problemService;
 
     /**
-     * 通过主键查询单条数据
-     *
-     * @param id 主键
-     * @return 单条数据
+     * 查询题目的详细内容
+     * @param problemId
+     * @param userId
+     * @return
      */
-    @GetMapping("selectOne")
-    public Problem selectOne(Integer id) {
-        return this.problemService.queryById(id);
+    @PassToken
+    @GetMapping(value = "/{problemId}/")
+    public RestInfo queryProblemById(@PathVariable("problemId") int problemId, @RequestParam("userId") Integer userId) {
+        return problemService.queryProblemById(problemId,userId);
+
     }
 
 }

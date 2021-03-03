@@ -1,6 +1,7 @@
 package com.leetcode.controller;
 
 import com.leetcode.entity.User;
+import com.leetcode.response.Result;
 import com.leetcode.service.UserService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
@@ -22,20 +23,17 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    /**
-     * 通过主键查询单条数据
-     *
-     * @param id 主键
-     * @return 单条数据
-     */
-    @GetMapping("selectOne/{id}")
-    public User selectOne(@Param("id") Integer id) {
-        return this.userService.queryById(id);
-    }
-    @GetMapping("select")
-    public User selectOne() {
-        System.out.println("....");
-        return this.userService.queryById(1);
+    /*
+     * @Author lzh
+     * @Description //TODO 根据 id 查询 头像
+     * @Date 23:11 2021/2/23
+     * @Param [userId]
+     * @return com.leetcode.response.Result
+     **/
+    @RequestMapping("/{userId}")
+    public Result selectImageById(@PathVariable("userId") Integer userId) {
+        User user = userService.selectImageById(userId);
+        return new Result(true, 200, "用户查询成功", user);
     }
 
 }

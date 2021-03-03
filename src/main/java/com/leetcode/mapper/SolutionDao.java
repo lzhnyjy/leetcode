@@ -1,6 +1,7 @@
 package com.leetcode.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import com.leetcode.entity.Label;
 import com.leetcode.entity.Solution;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -14,73 +15,41 @@ import java.util.List;
  * @since 2021-02-7 21:12:36
  */
 @Repository
-public interface SolutionDao extends BaseMapper<Solution> {
-
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param solutionid 主键
-     * @return 实例对象
-     */
-    Solution queryById(Integer solutionid);
-
-    /**
-     * 查询指定行数据
-     *
-     * @param offset 查询起始位置
-     * @param limit  查询条数
-     * @return 对象列表
-     */
-    List<Solution> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+public interface SolutionDao {
 
 
     /**
-     * 通过实体作为筛选条件查询
-     *
-     * @param solution 实例对象
-     * @return 对象列表
-     */
-    List<Solution> queryAll(Solution solution);
+     * @return java.util.List<com.leetcode.entity.Solution>
+     * @Author lzh
+     * @Description //TODO 搜索题解/题解排序/翻页
+     * @Date 23:21 2021/2/23
+     * @Param [problemId, solutionKey, solutionOrderType, solutionType]
+     **/
+    List<Solution> solution(@Param("problemId") Integer problemId,
+                            @Param("solutionKey") String solutionKey,
+                            @Param("solutionOrderType") Integer solutionOrderType,
+                            @Param("solutionType") List<String> solutionType);
 
-    /**
-     * 新增数据
-     *
-     * @param solution 实例对象
-     * @return 影响行数
-     */
-    int insert(Solution solution);
 
-    /**
-     * 批量新增数据（MyBatis原生foreach方法）
-     *
-     * @param entities List<Solution> 实例对象列表
-     * @return 影响行数
-     */
-    int insertBatch(@Param("entities") List<Solution> entities);
+    List<Label> selectLabel(@Param("solutionId") Integer solutionId);
 
-    /**
-     * 批量新增或按主键更新数据（MyBatis原生foreach方法）
-     *
-     * @param entities List<Solution> 实例对象列表
-     * @return 影响行数
-     */
-    int insertOrUpdateBatch(@Param("entities") List<Solution> entities);
+    Solution selectSolutionById(@Param("solutionId") Integer solutionId);
 
-    /**
-     * 修改数据
-     *
-     * @param solution 实例对象
-     * @return 影响行数
-     */
-    int update(Solution solution);
+    void addVisitedNumber(@Param("solutionId") Integer solutionId);
 
-    /**
-     * 通过主键删除数据
-     *
-     * @param solutionid 主键
-     * @return 影响行数
-     */
-    int deleteById(Integer solutionid);
+    Integer addLikeNumber(@Param("type") Integer type, @Param("targetType") Integer targetType, @Param("Id") Integer solutionId);
+
+    Integer selectLikeNumberById(@Param("targetType") Integer targetType, @Param("Id") Integer solutionId);
+
+    Integer addSolution(@Param("solution") Solution solution);
+
+    Integer addSolutionLabel(@Param("solution") Solution solution);
+
+    Integer addCommentNumbers(@Param("solutionId") Integer solutionId);
+
+    Integer addSolutionLike(@Param("solutionId") Integer solutionId, @Param("userId") Integer userId);
+
+    Integer delSolutionLike(@Param("solutionId") Integer solutionId, @Param("userId") Integer userId);
 
 }
 

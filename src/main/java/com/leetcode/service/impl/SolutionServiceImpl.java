@@ -1,79 +1,104 @@
-package com.leetcode.service.impl;
 
+package com.leetcode.service.impl;/**
+ * @Author lzh
+ */
+
+import com.leetcode.entity.Label;
 import com.leetcode.entity.Solution;
+import com.leetcode.mapper.SolutionCommentDao;
 import com.leetcode.mapper.SolutionDao;
 import com.leetcode.service.SolutionService;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
- * (Solution)表服务实现类
- *
- * @author makejava
- * @since 2021-02-7 21:12:36
+ * @ClassName SolutionServiceImpl
+ * @Description //TODO
+ * @Author lzh
+ * @Date 2021/2/23 11:27
+ * @Version 1.0
  */
-@Service("solutionService")
+@Service
 public class SolutionServiceImpl implements SolutionService {
-    @Resource
+
+    @Autowired
     private SolutionDao solutionDao;
 
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param solutionid 主键
-     * @return 实例对象
-     */
-    @Override
-    public Solution queryById(Integer solutionid) {
-        return this.solutionDao.queryById(solutionid);
-    }
+    @Autowired
+    private SolutionCommentDao solutionCommentDao;
 
-    /**
-     * 查询多条数据
-     *
-     * @param offset 查询起始位置
-     * @param limit  查询条数
-     * @return 对象列表
-     */
     @Override
-    public List<Solution> queryAllByLimit(int offset, int limit) {
-        return this.solutionDao.queryAllByLimit(offset, limit);
-    }
-
-    /**
-     * 新增数据
-     *
-     * @param solution 实例对象
-     * @return 实例对象
-     */
-    @Override
-    public Solution insert(Solution solution) {
-        this.solutionDao.insert(solution);
+    public List<Solution> solution(Integer problemId, String solutionKey, Integer solutionOrderType, String solutionType) {
+        List<String> splitSolutionType = null;
+        if ("null".equalsIgnoreCase(solutionKey)) {
+            solutionKey = null;
+        }
+        if ("null".equalsIgnoreCase(solutionType)) {
+            solutionType = null;
+        } else {
+            splitSolutionType = Arrays.asList(solutionType.split("-"));
+        }
+        List<Solution> solution = solutionDao.solution(problemId, solutionKey, solutionOrderType, splitSolutionType);
         return solution;
     }
 
-    /**
-     * 修改数据
-     *
-     * @param solution 实例对象
-     * @return 实例对象
-     */
     @Override
-    public Solution update(Solution solution) {
-        this.solutionDao.update(solution);
-        return this.queryById(solution.getSolutionid());
+    public List<Label> selectLabel(Integer solutionId) {
+        List<Label> labels = solutionDao.selectLabel(solutionId);
+        return labels;
     }
 
-    /**
-     * 通过主键删除数据
-     *
-     * @param solutionid 主键
-     * @return 是否成功
-     */
     @Override
-    public boolean deleteById(Integer solutionid) {
-        return this.solutionDao.deleteById(solutionid) > 0;
+    public Solution selectSolutionById(Integer solutionId) {
+        Solution solution = solutionDao.selectSolutionById(solutionId);
+        return solution;
+    }
+
+    @Override
+    public void addSolutionVisitedNumber(Integer solutionId) {
+        solutionDao.addVisitedNumber(solutionId);
+    }
+
+    @Override
+    public Integer addSolutionLikeNumber(Integer type, Integer targetType, Integer Id, Integer userId) {
+        if (type == 1) {
+            if (targetType == 1) {
+                solutionDao.addSolutionLike(Id, userId);
+            } else if (targetType == 0) {
+                solutionCommentDao.addSolutionCommentLike(Id, userId);
+            }
+        } else if (type == 0) {
+            if (targetType == 1) {
+                solutionDao.delSolutionLike(Id, userId);
+            } else if (targetType == 0) {
+                solutionCommentDao.delSolutionCommentLike(Id, userId);
+            }
+        }
+
+        solutionDao.addLikeNumber(type, targetType, Id);
+        Integer likeNumber = selectLikeNumberById(targetType, Id);
+        return likeNumber;
+    }
+
+    @Override
+    public Integer selectLikeNumberById(Integer targetType, Integer Id) {
+        Integer likeNumber = solutionDao.selectLikeNumberById(targetType, Id);
+        return likeNumber;
+    }
+
+    @Override
+    public Integer addSolution(Solution solution) {
+        Integer integer = solutionDao.addSolution(solution);
+        return integer;
+    }
+
+    public Integer addSolutionLabel(Solution solution) {
+        Integer integer = solutionDao.addSolutionLabel(solution);
+        return integer;
     }
 }

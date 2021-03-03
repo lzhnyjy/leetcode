@@ -3,6 +3,7 @@ package com.leetcode.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.ibatis.type.Alias;
 
 import java.io.Serializable;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
  * @since 2021-02-7 21:09:11
  */
 @Data
+@Alias("user")
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements Serializable {

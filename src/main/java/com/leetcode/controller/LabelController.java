@@ -1,35 +1,34 @@
-package com.leetcode.controller;
+package com.leetcode.controller;/**
+ * @Author lzh
+ */
 
 import com.leetcode.entity.Label;
+import com.leetcode.response.Result;
 import com.leetcode.service.LabelService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
+import java.util.List;
 
 /**
- * (Label)表控制层
- *
- * @author makejava
- * @since 2021-02-17 21:14:11
+ * @ClassName LabelController
+ * @Description //TODO 标签
+ * @Author lzh
+ * @Date 2021/2/25 11:41
+ * @Version 1.0
  */
 @RestController
-@RequestMapping("label")
+@RequestMapping("question/label")
 public class LabelController {
-    /**
-     * 服务对象
-     */
-    @Resource
+
+    @Autowired
     private LabelService labelService;
 
-    /**
-     * 通过主键查询单条数据
-     *
-     * @param id 主键
-     * @return 单条数据
-     */
-    @GetMapping("selectOne")
-    public Label selectOne(Integer id) {
-        return this.labelService.queryById(id);
+    @GetMapping("/")
+    public Result selectAllLabels(){
+        List<Label> labels = labelService.selectAllLabels();
+        return new Result(true, 200, "标签查询成功", labels);
     }
-
 }

@@ -1,56 +1,33 @@
 package com.leetcode.service;
 
-import com.leetcode.entity.Solution;
 
+import com.leetcode.entity.Label;
+import com.leetcode.entity.Solution;
 import java.util.List;
+
 
 /**
  * (Solution)表服务接口
  *
- * @author makejava
- * @since 2021-02-7 21:12:36
+ * @author protagonist
+ * @since 2021-02-18 20:11:21
  */
 public interface SolutionService {
 
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param solutionid 主键
-     * @return 实例对象
-     */
-    Solution queryById(Integer solutionid);
+    List<Solution> solution(Integer problemId, String solutionKey, Integer solutionOrderType, String solutionType);
 
-    /**
-     * 查询多条数据
-     *
-     * @param offset 查询起始位置
-     * @param limit  查询条数
-     * @return 对象列表
-     */
-    List<Solution> queryAllByLimit(int offset, int limit);
+    List<Label> selectLabel(Integer solutionId);
 
-    /**
-     * 新增数据
-     *
-     * @param solution 实例对象
-     * @return 实例对象
-     */
-    Solution insert(Solution solution);
+    Solution selectSolutionById(Integer solutionId);
 
-    /**
-     * 修改数据
-     *
-     * @param solution 实例对象
-     * @return 实例对象
-     */
-    Solution update(Solution solution);
+    void addSolutionVisitedNumber(Integer solutionId);
 
-    /**
-     * 通过主键删除数据
-     *
-     * @param solutionid 主键
-     * @return 是否成功
-     */
-    boolean deleteById(Integer solutionid);
+    Integer addSolutionLikeNumber(Integer type, Integer targetType, Integer solutionId, Integer userId);
+
+    Integer selectLikeNumberById(Integer targetType, Integer solutionId);
+
+    Integer addSolution(Solution solution);
+
+    Integer addSolutionLabel(Solution solution);
 
 }

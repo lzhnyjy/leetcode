@@ -2,153 +2,142 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.leetcode.mapper.SolutionDao">
 
-    <resultMap type="com.leetcode.entity.Solution" id="SolutionMap">
-        <result property="solutionid" column="solutionId" jdbcType="INTEGER"/>
-        <result property="userid" column="userId" jdbcType="INTEGER"/>
-        <result property="problemid" column="problemId" jdbcType="INTEGER"/>
-        <result property="solutiontext" column="solutionText" jdbcType="VARCHAR"/>
-        <result property="solutioncode" column="solutionCode" jdbcType="VARCHAR"/>
-        <result property="solutiondatetime" column="solutionDatetime" jdbcType="TIMESTAMP"/>
-        <result property="visitednumber" column="visitedNumber" jdbcType="INTEGER"/>
-        <result property="isofficial" column="isOfficial" jdbcType="INTEGER"/>
-        <result property="solutionlikenumber" column="solutionLikeNumber" jdbcType="INTEGER"/>
-        <result property="solutioncommentnumber" column="solutionCommentNumber" jdbcType="INTEGER"/>
-        <result property="solutionname" column="solutionName" jdbcType="VARCHAR"/>
+    <resultMap id="solutionMap" type="solution" autoMapping="true">
+        <id property="solutionId" column="solutionId"/>
+        <collection property="labelList" javaType="ArrayList" ofType="label">
+            <id property="labelId" column="labelId"/>
+            <result property="labelName" column="labelName"/>
+        </collection>
     </resultMap>
 
-    <!--查询单个-->
-    <select id="queryById" resultMap="SolutionMap">
-        select
-          solutionId, userId, problemId, solutionText, solutionCode, solutionDatetime, visitedNumber, isOfficial, solutionLikeNumber, solutionCommentNumber, solutionName
-        from leetcode.solution
-        where solutionId = #{solutionid}
+    <select id="solution" resultMap="solutionMap" parameterType="int">
+        select solution.*,user.username,user.image,label.*
+        from solution,label,labelsolution,user
+        where solution.userId=user.userId and solution.solutionId=labelsolution.solutionId and
+        labelsolution.labelId=label.labelId and problemId = #{problemId}
+        <if test="solutionKey!=null and solutionKey!=''">
+            and solutionText like concat('%',#{solutionKey},'%')
+        </if>
+        <if test="solutionType!=null and solutionType.size()>0">
+            and label.labelName in
+            <foreach collection="solutionType" item="type" index="i" open="(" close=")" separator=",">
+                #{type}
+            </foreach>
+        </if>
+        <choose>
+            <when test="solutionOrderType==1">
+                order by solution.solutionLikeNumber
+            </when>
+            <when test="solutionOrderType==2">
+                order by solution.visitedNumber
+            </when>
+            <when test="solutionOrderType==3">
+                order by solution.solutionDatetime desc
+            </when>
+            <when test="solutionOrderType==4">
+                order by solution.solutionDatetime asc
+            </when>
+        </choose>
     </select>
 
-    <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="SolutionMap">
-        select
-          solutionId, userId, problemId, solutionText, solutionCode, solutionDatetime, visitedNumber, isOfficial, solutionLikeNumber, solutionCommentNumber, solutionName
-        from leetcode.solution
-        limit #{offset}, #{limit}
+
+    <select id="selectLabel" resultType="label" parameterType="int">
+        select label.*
+        from solution,label,labelsolution
+        where solution.solutionId=labelsolution.solutionId and labelsolution.labelId=label.labelId and solution.solutionId=#{solutionId}
     </select>
 
-    <!--通过实体作为筛选条件查询-->
-    <select id="queryAll" resultMap="SolutionMap">
-        select
-        solutionId, userId, problemId, solutionText, solutionCode, solutionDatetime, visitedNumber, isOfficial,
-        solutionLikeNumber, solutionCommentNumber, solutionName
-        from leetcode.solution
-        <where>
-            <if test="solutionid != null">
-                and solutionId = #{solutionid}
-            </if>
-            <if test="userid != null">
-                and userId = #{userid}
-            </if>
-            <if test="problemid != null">
-                and problemId = #{problemid}
-            </if>
-            <if test="solutiontext != null and solutiontext != ''">
-                and solutionText = #{solutiontext}
-            </if>
-            <if test="solutioncode != null and solutioncode != ''">
-                and solutionCode = #{solutioncode}
-            </if>
-            <if test="solutiondatetime != null">
-                and solutionDatetime = #{solutiondatetime}
-            </if>
-            <if test="visitednumber != null">
-                and visitedNumber = #{visitednumber}
-            </if>
-            <if test="isofficial != null">
-                and isOfficial = #{isofficial}
-            </if>
-            <if test="solutionlikenumber != null">
-                and solutionLikeNumber = #{solutionlikenumber}
-            </if>
-            <if test="solutioncommentnumber != null">
-                and solutionCommentNumber = #{solutioncommentnumber}
-            </if>
-            <if test="solutionname != null and solutionname != ''">
-                and solutionName = #{solutionname}
-            </if>
-        </where>
+    <select id="selectSolutionById" resultMap="solutionMap" parameterType="int">
+        select solution.*,label.*,user.*
+        from solution,label,labelsolution,user
+        where user.userId=solution.userId and labelsolution.labelId=label.labelId and solution.solutionId=labelsolution.solutionId
+        and solution.solutionId=#{solutionId}
     </select>
 
-    <!--新增所有列-->
-    <insert id="insert" keyProperty="solutionid" useGeneratedKeys="true">
-        insert into leetcode.solution(userId, problemId, solutionText, solutionCode, solutionDatetime, visitedNumber, isOfficial, solutionLikeNumber, solutionCommentNumber, solutionName)
-        values (#{userid}, #{problemid}, #{solutiontext}, #{solutioncode}, #{solutiondatetime}, #{visitednumber}, #{isofficial}, #{solutionlikenumber}, #{solutioncommentnumber}, #{solutionname})
-    </insert>
-
-    <insert id="insertBatch" keyProperty="solutionid" useGeneratedKeys="true">
-        insert into leetcode.solution(userId, problemId, solutionText, solutionCode, solutionDatetime, visitedNumber,
-        isOfficial, solutionLikeNumber, solutionCommentNumber, solutionName)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userid}, #{entity.problemid}, #{entity.solutiontext}, #{entity.solutioncode},
-            #{entity.solutiondatetime}, #{entity.visitednumber}, #{entity.isofficial}, #{entity.solutionlikenumber},
-            #{entity.solutioncommentnumber}, #{entity.solutionname})
-        </foreach>
-    </insert>
-
-    <insert id="insertOrUpdateBatch" keyProperty="solutionid" useGeneratedKeys="true">
-        insert into leetcode.solution(userId, problemId, solutionText, solutionCode, solutionDatetime, visitedNumber,
-        isOfficial, solutionLikeNumber, solutionCommentNumber, solutionName)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userid}, #{entity.problemid}, #{entity.solutiontext}, #{entity.solutioncode},
-            #{entity.solutiondatetime}, #{entity.visitednumber}, #{entity.isofficial}, #{entity.solutionlikenumber},
-            #{entity.solutioncommentnumber}, #{entity.solutionname})
-        </foreach>
-        on duplicate key update
-        userId = values(userId) , problemId = values(problemId) , solutionText = values(solutionText) , solutionCode =
-        values(solutionCode) , solutionDatetime = values(solutionDatetime) , visitedNumber = values(visitedNumber) ,
-        isOfficial = values(isOfficial) , solutionLikeNumber = values(solutionLikeNumber) , solutionCommentNumber =
-        values(solutionCommentNumber) , solutionName = values(solutionName)
-    </insert>
-
-    <!--通过主键修改数据-->
-    <update id="update">
-        update leetcode.solution
-        <set>
-            <if test="userid != null">
-                userId = #{userid},
-            </if>
-            <if test="problemid != null">
-                problemId = #{problemid},
-            </if>
-            <if test="solutiontext != null and solutiontext != ''">
-                solutionText = #{solutiontext},
-            </if>
-            <if test="solutioncode != null and solutioncode != ''">
-                solutionCode = #{solutioncode},
-            </if>
-            <if test="solutiondatetime != null">
-                solutionDatetime = #{solutiondatetime},
-            </if>
-            <if test="visitednumber != null">
-                visitedNumber = #{visitednumber},
-            </if>
-            <if test="isofficial != null">
-                isOfficial = #{isofficial},
-            </if>
-            <if test="solutionlikenumber != null">
-                solutionLikeNumber = #{solutionlikenumber},
-            </if>
-            <if test="solutioncommentnumber != null">
-                solutionCommentNumber = #{solutioncommentnumber},
-            </if>
-            <if test="solutionname != null and solutionname != ''">
-                solutionName = #{solutionname},
-            </if>
-        </set>
-        where solutionId = #{solutionid}
+    <update id="addVisitedNumber" parameterType="int">
+        update solution
+        set visitedNumber=visitedNumber+1
+        where solutionId=#{solutionId}
     </update>
 
-    <!--通过主键删除-->
-    <delete id="deleteById">
-        delete from leetcode.solution where solutionId = #{solutionid}
+    <update id="addLikeNumber" parameterType="int">
+        <if test="targetType==1">
+            update solution
+            set solutionLikeNumber=
+            <choose>
+                <when test="type==0">
+                    solutionLikeNumber-1
+                </when>
+                <when test="type==1">
+                    solutionLikeNumber+1
+                </when>
+                <otherwise>
+                    solutionLikeNumber
+                </otherwise>
+            </choose>
+            where solutionId=#{Id}
+        </if>
+        <if test="targetType==0">
+            update solutioncomment
+            set commentLikeNumber=
+            <choose>
+                <when test="type==0">
+                    commentLikeNumber-1
+                </when>
+                <when test="type==1">
+                    commentLikeNumber+1
+                </when>
+                <otherwise>
+                    commentLikeNumber
+                </otherwise>
+            </choose>
+            where commentId=#{Id}
+        </if>
+    </update>
+
+
+    <select id="selectLikeNumberById" parameterType="int" resultType="int">
+        <if test="targetType==1">
+            select solutionLikeNumber
+            from solution
+            where solutionId=#{Id}
+        </if>
+        <if test="targetType==0">
+            select commentLikeNumber
+            from solutioncomment
+            where commentId=#{Id}
+        </if>
+
+    </select>
+
+    <insert id="addSolution" parameterType="solution" useGeneratedKeys="true" keyProperty="solutionId"
+            keyColumn="solutionId">
+        insert into solution (userId,problemId,solutionText,solutionName)
+        values (#{solution.userId},#{solution.problemId},#{solution.solutionText},#{solution.solutionName})
+    </insert>
+
+    <insert id="addSolutionLabel" parameterType="solution">
+        insert into labelsolution
+        values
+        <foreach collection="solution.labelIds" separator="," item="labelId" index="index">
+            (#{labelId},#{solution.solutionId})
+        </foreach>
+    </insert>
+
+    <update id="addCommentNumbers" parameterType="int">
+        update solution
+        set solutionCommentNumber=solutionCommentNumber+1
+        where solutionId=#{solutionId}
+    </update>
+
+    <insert id="addSolutionLike" parameterType="int">
+        insert into solutionlike
+        values(#{solutionId},#{userId})
+    </insert>
+
+    <delete id="delSolutionLike" parameterType="int">
+        delete from solutionlike
+        where solutionId=#{solutionId} and userId=#{userId}
     </delete>
 
 </mapper>

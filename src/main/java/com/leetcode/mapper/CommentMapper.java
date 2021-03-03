@@ -25,7 +25,7 @@ public interface CommentMapper extends BaseMapper<CommentVo> {
      * @param problemId
      * @return
      */
-    @Select("SELECT p.commentId,p.userId,u.username,u.image,p.commentContent, p.commentDatetime, p.commentLikeNumber FROM problemcomment p,`user` u WHERE p.problemId=2 AND p.userId=u.userId ORDER BY p.commentLikeNumber DESC LIMIT 0,5")
+    @Select("SELECT p.commentId,p.userId,u.username,u.image,p.commentContent, p.commentDatetime, p.commentLikeNumber FROM problemcomment p,`user` u WHERE p.problemId=#{problemId} AND p.userId=u.userId ORDER BY p.commentLikeNumber DESC LIMIT 0,5")
     List<CommentVo> queryCommentByProblemIdBest(@Param("problemId") int problemId);
 
     /**
@@ -35,7 +35,7 @@ public interface CommentMapper extends BaseMapper<CommentVo> {
      * @param limit
      * @return
      */
-    @Select("SELECT p.commentId,p.userId,u.username,u.image,p.commentContent, p.commentDatetime, p.commentLikeNumber FROM problemcomment p,`user` u WHERE p.problemId=2 AND p.userId=u.userId ORDER BY p.commentDatetime DESC LIMIT #{start},#{limit}")
+    @Select("SELECT p.commentId,p.userId,u.username,u.image,p.commentContent, p.commentDatetime, p.commentLikeNumber FROM problemcomment p,`user` u WHERE p.problemId=#{problemId} AND p.userId=u.userId ORDER BY p.commentDatetime DESC LIMIT #{start},#{limit}")
     List<CommentVo> queryCommentByProblemId(@Param("problemId") int problemId, @Param("start") int start, @Param("limit") int limit);
 
 

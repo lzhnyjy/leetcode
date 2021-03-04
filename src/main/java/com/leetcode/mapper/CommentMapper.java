@@ -17,11 +17,12 @@ public interface CommentMapper extends BaseMapper<CommentVo> {
      * @return
      */
     @Select("SELECT COUNT(p.problemId) FROM problemcomment p WHERE p.problemId=#{problemId}")
-     int queryProblemCommentTotal(@Param("problemId")int problemId);
+    int queryProblemCommentTotal(@Param("problemId") int problemId);
 
 
     /**
      * 根据评论的点赞数目排序精彩评论
+     *
      * @param problemId
      * @return
      */

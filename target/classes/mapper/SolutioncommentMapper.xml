@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leetcode.mapper.SolutioncommentMapper">
+
+    <select id="getByUserId" resultMap="solutioncommentMap">
+        select pb.*, p.solutionCode as solutionName
+        from solutioncomment pb
+                 left join solution p on p.solutionId = pb.solutionId
+        where pb.userId = #{userId}
+    </select>
+
+    <resultMap id="solutioncommentMap" type="com.leetcode.vo.Solutioncomment">
+        <result column="solutionName" property="solutionName"/>
+        <result column="commentContent" property="commentContent"/>
+        <result column="commentDatetime" property="commentDatetime"/>
+    </resultMap>
+
+</mapper>

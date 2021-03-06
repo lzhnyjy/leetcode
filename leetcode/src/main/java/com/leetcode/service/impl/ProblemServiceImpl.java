@@ -52,7 +52,7 @@ public class ProblemServiceImpl implements ProblemService {
     @Transactional
     @Override
     public List<Problem> findProblem(@RequestParam("page") Integer page, @RequestParam("userId") Integer userId, @RequestParam("problemKey") String problemKey, @RequestParam("limit") Integer limit, @RequestParam("difficulty") String difficulty, @RequestParam("submitresult") String submitResult){
-        long start = System.currentTimeMillis();
+//        long start = System.currentTimeMillis();
         QueryWrapper<Problem> pWrapper = new QueryWrapper<>();
         List<Problem> problemList = new ArrayList<>();
         if (problemKey != null){
@@ -111,7 +111,7 @@ public class ProblemServiceImpl implements ProblemService {
             }
         }
         long end = System.currentTimeMillis();
-        System.out.println("代码执行的时间是： " + (end - start));
+//        System.out.println("代码执行的时间是： " + (end - start));
         return problemList1;
     }
 
@@ -123,7 +123,7 @@ public class ProblemServiceImpl implements ProblemService {
     @Transactional
     @Override
     public UserPerformance findUserPerFormance(Integer userId) throws ExecutionException, InterruptedException {
-        long start = System.currentTimeMillis();
+//        long start = System.currentTimeMillis();
         Integer allProblem = null;
         Integer userFinish = null;
 
@@ -179,7 +179,7 @@ public class ProblemServiceImpl implements ProblemService {
         } while (!f1.isDone() || !f2.isDone());
 
         long end = System.currentTimeMillis();
-        System.out.println("代码执行的时间是： " + (end - start));
+//        System.out.println("代码执行的时间是： " + (end - start));
         return new UserPerformance(allProblem, userFinish, easy, mid, tru);
     }
 
@@ -193,7 +193,7 @@ public class ProblemServiceImpl implements ProblemService {
     public Problemdesc findProblemDesc(Integer problemId) throws ExecutionException, InterruptedException {
 //          尝试使用redies 缓存
         //        如果 problemId 为0 表示随机开始一道题目
-        long start = System.currentTimeMillis();
+//        long start = System.currentTimeMillis();
         if (problemId == 0){
             Integer randomId = pMapper.selectCount(null);
             problemId = (int) (Math.random() * randomId) + 1;
@@ -229,7 +229,7 @@ public class ProblemServiceImpl implements ProblemService {
         problemdesc.setLabelList(labelList);
 
         long end = System.currentTimeMillis();
-        System.out.println("代码执行的时间为： " + (end - start));
+//        System.out.println("代码执行的时间为： " + (end - start));
         return problemdesc;
     }
 }

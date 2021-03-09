@@ -1,6 +1,5 @@
 package com.leetcode.service.impl;
 
-import com.leetcode.entity.Problemdesc;
 import com.leetcode.mapper.ProblemdescDao;
 import com.leetcode.service.ProblemdescService;
 import org.springframework.stereotype.Service;

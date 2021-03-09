@@ -1,7 +1,5 @@
 package com.leetcode.service;
 
-import com.leetcode.entity.Exampleinfo;
-
 import java.util.List;
 
 /**

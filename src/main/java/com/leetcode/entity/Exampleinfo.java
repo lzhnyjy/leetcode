@@ -1,46 +1,30 @@
 package com.leetcode.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import java.io.Serializable;
 
-/**
- * (Exampleinfo)实体类
- *
- * @author makejava
- * @since 2021-02-7 21:14:22
- */
 @Data
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Exampleinfo implements Serializable {
-    private static final long serialVersionUID = 924102339850784709L;
-    /**
-     * 示例id
-     */
-    private Integer exampleid;
-    /**
-     * 输入
-     */
-    private String exampleinput;
-    /**
-     * 输出
-     */
-    private String exampleoutput;
-    /**
-     * 解释
-     */
-    private String exampleexplain;
-    /**
-     * 示例图片
-     */
-    private String exampleimage;
-    /**
-     * 题目id
-     */
-    private Integer problemid;
-
-
+public class Exampleinfo {
+    @TableId(value = "exampleId",type = IdType.AUTO)//在自增主键的变量加上即可
+    @TableField("'exampleId'") //示例id
+   private String exampleId;
+    @TableField("'exampleInput'") //输入
+   private String exampleInput;
+    @TableField("'exampleOutput'")//输出
+   private String exampleOutput;
+    @TableField("'exampleExplain'")//解释
+   private String exampleExplain;
+    @TableField("'exampleImage'")//示例图片
+   private String exampleImage;
+    @TableField("'problemId'")//题目id
+   private String  problemId;
 }

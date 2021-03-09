@@ -1,7 +1,5 @@
 package com.leetcode.service;
 
-import com.leetcode.entity.Labelproblem;
-
 import java.util.List;
 
 /**

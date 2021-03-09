@@ -1,7 +1,6 @@
 package com.leetcode.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.leetcode.entity.Exampleinfo;
 import org.springframework.stereotype.Repository;
 
 /**

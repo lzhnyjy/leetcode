@@ -12,11 +12,12 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Labelproblem {
-    @TableId(value = "labelId",type = IdType.AUTO)//在自增主键的变量加上即可
-    @TableField("`labelId`")
-    private Integer labelId;
-    @TableId(value = "id",type = IdType.AUTO)//在自增主键的变量加上即可
+public class Problemrecord {
+    @TableId(value = "userId",type = IdType.AUTO)//在自增主键的变量加上即可
+    @TableField("`userId`")
+    private Integer userId;// 用户id
     @TableField("`problemId`")
-    private Integer problemId;
+    private Integer problemId; //题目id
+    @TableField("`problemRecord`")
+    private Integer problemRecord; // 做题记录
 }

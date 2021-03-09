@@ -1,6 +1,5 @@
 package com.leetcode.service.impl;
 
-import com.leetcode.entity.Labelproblem;
 import com.leetcode.mapper.LabelproblemDao;
 import com.leetcode.service.LabelproblemService;
 import org.springframework.stereotype.Service;

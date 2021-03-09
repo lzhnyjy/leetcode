@@ -1,7 +1,6 @@
 package com.leetcode.mapper;
 
 
-import com.leetcode.entity.Label;
 import com.leetcode.entity.Solution;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

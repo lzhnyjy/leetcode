@@ -1,6 +1,5 @@
 package com.leetcode.controller;
 
-import com.leetcode.entity.Problemdesc;
 import com.leetcode.service.ProblemdescService;
 import org.springframework.web.bind.annotation.*;
 

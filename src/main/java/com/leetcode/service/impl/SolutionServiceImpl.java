@@ -3,12 +3,10 @@ package com.leetcode.service.impl;/**
  * @Author lzh
  */
 
-import com.leetcode.entity.Label;
 import com.leetcode.entity.Solution;
 import com.leetcode.mapper.SolutionCommentDao;
 import com.leetcode.mapper.SolutionDao;
 import com.leetcode.service.SolutionService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

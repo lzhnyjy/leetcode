@@ -2,14 +2,11 @@
 package com.leetcode.service.impl;
 
 
-import com.leetcode.entity.Label;
 import com.leetcode.mapper.LabelDao;
 import com.leetcode.service.LabelService;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

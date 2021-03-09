@@ -2,7 +2,6 @@ package com.leetcode.controller;/**
  * @Author lzh
  */
 
-import com.leetcode.entity.Label;
 import com.leetcode.response.Result;
 import com.leetcode.service.LabelService;
 import org.springframework.beans.factory.annotation.Autowired;

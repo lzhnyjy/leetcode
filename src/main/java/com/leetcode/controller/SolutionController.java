@@ -2,7 +2,6 @@ package com.leetcode.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.leetcode.entity.Label;
 import lombok.extern.slf4j.Slf4j;
 import com.leetcode.response.Result;
 import com.leetcode.entity.Solution;

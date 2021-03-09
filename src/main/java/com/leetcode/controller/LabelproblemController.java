@@ -1,6 +1,5 @@
 package com.leetcode.controller;
 
-import com.leetcode.entity.Labelproblem;
 import com.leetcode.service.LabelproblemService;
 import org.springframework.web.bind.annotation.*;
 

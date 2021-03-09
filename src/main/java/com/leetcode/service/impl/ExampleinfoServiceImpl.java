@@ -1,6 +1,5 @@
 package com.leetcode.service.impl;
 
-import com.leetcode.entity.Exampleinfo;
 import com.leetcode.mapper.ExampleinfoDao;
 import com.leetcode.service.ExampleinfoService;
 import org.springframework.stereotype.Service;

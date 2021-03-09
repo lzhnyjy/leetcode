@@ -1,6 +1,5 @@
 package com.leetcode.controller;
 
-import com.leetcode.entity.Exampleinfo;
 import com.leetcode.service.ExampleinfoService;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leetcode.mapper.SolutionCommentDao">
+
+    <select id="selectCommentBySolutionId" parameterType="int" resultType="solutionComment">
+        select solutioncomment.*,username,image
+        from solutioncomment,user
+        where solutioncomment.userId=user.userId and solutionId=#{solutionId}
+    </select>
+    
+    <insert id="addSolutionComment" parameterType="solutionComment" useGeneratedKeys="true" keyProperty="commentId" keyColumn="commentId" >
+        insert into solutioncomment
+        (solutionId,commentContent,userId,parentId)
+        values (#{solutionComment.solutionId},#{solutionComment.commentContent},#{solutionComment.userId},#{solutionComment.parentId})
+    </insert>
+
+
+    <select id="selectTopMostCommentId" parameterType="int" resultType="solutionComment">
+        select *
+        from solutioncomment
+        where commentId = #{parentId}
+    </select>
+    
+    <insert id="addSolutionCommentLike" parameterType="int">
+        insert  into solutioncommentlike
+        values (#{solutionCommentId},#{userId})
+    </insert>
+
+    <delete id="delSolutionCommentLike" parameterType="int">
+        delete from solutioncommentlike
+        where commentId=#{solutionCommentId} and userId=#{userId}
+    </delete>
+</mapper>
